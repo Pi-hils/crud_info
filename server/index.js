@@ -15,7 +15,7 @@ app.post("/info", async (req, res) => {
     const { name } = req.body;
     const { email } = req.body;
     const newInfo = await pool.query(
-      "INSERT INTO info (name, email) VALUES('Agnes B','agnes@hello.com ) RETURNING *",
+      "INSERT INTO info (name, email) VALUES($1, $2) RETURNING *",
        [name, email]
     );
     res.json(newInfo,row[0])
@@ -39,7 +39,7 @@ app.get("/info/:id", async(req,res) => {
 app.get("/todos/:id", async(req, res) => {
   try {
     const { id } = req.params;
-    const todo = await pool.query("select * FROM innfo where info_id = $1",[id])
+    const todo = await pool.query("SELECT * FROM info WHERE info_id = $1",[id])
     res.json(info.rows[0])
   } catch (err) {
     console.error(err.message)
@@ -47,6 +47,15 @@ app.get("/todos/:id", async(req, res) => {
 })
 
 //DELETE INFO
+app.delete("/info/:id", async(req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteInfo = await pool.query("DELETE FROM info WHERE info_id = $1", [id]
+    );
+  } catch (err) {
+    console.error(err.message)
+  }
+})
 
 app.listen(3001, () => {
   console.log("Server has started on port 3000")
