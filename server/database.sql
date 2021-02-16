@@ -1,0 +1,7 @@
+CREATE DATABASE details;
+
+CREATE TABLE info(
+  info_id SERIAL PRIMARY KEY,
+  name VARCHAR(200),
+  email VARCHAR(100)
+);
