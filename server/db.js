@@ -1,11 +1,10 @@
-const Pool = require ('pg').Pool;
+const { Client } = require ('pg');
 
-const pool = new Pool({
-  host: "localhost",
-  port: 5432,
-  user: "postgres",
-  password: "password",
-  database: "details",
-});
+const client= new Client()
+await client.connect()
 
-module.exports = pool;
+const res = await client.query('SELECT $1::text as message',['Hello world!!'])
+console.log(res.row[0].message)
+await client.end()
+
+module.exports = client;
